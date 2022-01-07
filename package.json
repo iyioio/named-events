@@ -1,0 +1,25 @@
+{
+  "name": "@iyio/named-events",
+  "version": "1.0.0",
+  "description": "A declarative typescript event library",
+  "main": "dist/named-events-index.js",
+  "types": "dist/named-events-index.d.ts",
+  "scripts": {
+    "watch": "tsc --watch",
+    "build": "tsc",
+    "build-publish": "npm run build && npm publish",
+    "example": "ts-node example.ts"
+  },
+  "repository": {
+    "type": "git",
+    "directory": ".",
+    "url": "https://github.com/iyioio/named-events"
+  },
+  "keywords": [],
+  "author": "Scott Vance",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  }
+}

@@ -1,14 +1,4 @@
-# named-events
-A declarative typescript event library
-
-## Install
-``` sh
-npm install @iyio/named-events
-```
-
-## Example
-``` ts
-import { createEvent, createEventT, createValueEvent } from '@iyio/named-events';
+import { createEvent, createEventT, createValueEvent } from './named-events-index';
 
 class ExampleClass
 {
@@ -82,5 +72,3 @@ obj.onStringChange.addListener(listener);
 obj.setStr('Jesus'); // triggers the listener
 obj.onStringChange.removeListener(listener);
 obj.setStr('Zeus'); // listener not called because removed
-
-```
