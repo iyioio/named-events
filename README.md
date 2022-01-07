@@ -84,3 +84,11 @@ obj.onStringChange.removeListener(listener);
 obj.setStr('Zeus'); // listener not called because removed
 
 ```
+
+## Output
+``` txt
+Shake'n Back
+I wanna go fast 🏎️
+Go fast turn left
+Baby Jesus
+```
