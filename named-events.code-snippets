@@ -1,0 +1,35 @@
+{
+  
+  "TS Named Event": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "ts-event",
+    "description": "TypeScript named event",
+    "body": [
+      "private readonly _on${1:name}=createEvent();",
+      "public get on${1:name}(){return this._on${1:name}.evt}"
+    ]
+  },
+
+
+  "TS Named Value Event": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "ts-value-event",
+    "description": "TypeScript named value event",
+    "body": [
+      "private readonly _on${1:name}=createValueEvent<${2:valueType}>();",
+      "public get on${1:name}(){return this._on${1:name}.evt}"
+    ]
+  },
+
+
+  "TS Named Custom Event": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "ts-custom-event",
+    "description": "TypeScript named custom event",
+    "body": [
+      "private readonly _on${1:name}=createEventT<(${2:listenerArgs})=>void>();",
+      "public get on${1:name}(){return this._on${1:name}.evt}"
+    ]
+  }
+
+}
