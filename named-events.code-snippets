@@ -27,7 +27,7 @@
     "prefix": "ts-custom-event",
     "description": "TypeScript named custom event",
     "body": [
-      "private readonly _on${1:name}=createEventT<(${2:listenerArgs})=>void>();",
+      "private readonly _on${1:name}=createCustomEvent<(${2:listenerArgs})=>void>();",
       "public get on${1:name}(){return this._on${1:name}.evt}"
     ]
   }

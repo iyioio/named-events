@@ -24,9 +24,9 @@ export type AddListenerCallback<TListener>=(listener:TListener)=>EventListenerRe
 export interface NamedEvent<TListener>
 {
 
-    addListener:(listener:TListener)=>void;
+    readonly addListener:(listener:TListener)=>void;
 
-    removeListener:(listener:TListener)=>void;
+    readonly removeListener:(listener:TListener)=>void;
 }
 
 /**
@@ -52,7 +52,7 @@ export type NamedValueEventSource<TValue> = NamedEventSourceT<ValueEventListener
  * Creates an event source for a custom listener type
  * @returns An event source
  */
-export function createEventT<TListener>():NamedEventSourceT<TListener>
+export function createCustomEvent<TListener>():NamedEventSourceT<TListener>
 {
     const listeners:TListener[]=[];
     const removeListener=(listener:TListener)=>
@@ -92,7 +92,7 @@ export function createEventT<TListener>():NamedEventSourceT<TListener>
  */
 export function createValueEvent<TValue>():NamedValueEventSource<TValue>
 {
-    return createEventT();
+    return createCustomEvent();
 }
 
 /**
@@ -101,7 +101,7 @@ export function createValueEvent<TValue>():NamedValueEventSource<TValue>
  */
 export function createEvent():NamedEventSource
 {
-    return createEventT();
+    return createCustomEvent();
 }
 
 /**
