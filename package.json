@@ -1,6 +1,6 @@
 {
   "name": "@iyio/named-events",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A declarative typescript event library",
   "main": "dist/named-events-index.js",
   "types": "dist/named-events-index.d.ts",
