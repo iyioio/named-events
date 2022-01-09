@@ -21,7 +21,7 @@ export type AddListenerCallback<TListener>=(listener:TListener)=>EventListenerRe
 /**
  * An object that triggers events
  */
-export interface NamedEvent<TListener>
+export interface NamedEventFuncs<TListener>
 {
 
     readonly addListener:(listener:TListener)=>void;
@@ -29,12 +29,14 @@ export interface NamedEvent<TListener>
     readonly removeListener:(listener:TListener)=>void;
 }
 
+export type NamedEvent<TListener>=NamedEventFuncs<TListener>&AddListenerCallback<TListener>;
+
 /**
  * An event source containing an event and a function to trigger the event
  */
 export interface NamedEventSourceT<TListener>
 {
-    readonly evt:NamedEvent<TListener>&AddListenerCallback<TListener>;
+    readonly evt:NamedEvent<TListener>;
     readonly trigger:TListener;
 }
 
