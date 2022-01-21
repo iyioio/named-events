@@ -29,14 +29,16 @@ export interface NamedEventFuncs<TListener>
     readonly removeListener:(listener:TListener)=>void;
 }
 
-export type NamedEvent<TListener>=NamedEventFuncs<TListener>&AddListenerCallback<TListener>;
+export type NamedEventT<TListener>=NamedEventFuncs<TListener>&AddListenerCallback<TListener>;
+
+export type NamedEvent=NamedEventT<EventListener>;
 
 /**
  * An event source containing an event and a function to trigger the event
  */
 export interface NamedEventSourceT<TListener>
 {
-    readonly evt:NamedEvent<TListener>;
+    readonly evt:NamedEventT<TListener>;
     readonly trigger:TListener;
 }
 
