@@ -52,6 +52,18 @@ export type NamedEventSource = NamedEventSourceT<EventListener>;
  */
 export type NamedValueEventSource<TValue> = NamedEventSourceT<ValueEventListener<TValue>>;
 
+
+
+/**
+ * An event source for events with a value. The event source also tracks the current value and
+ * allows the value to be returned using evt.getValue()
+ */
+export type NamedValueBackedEventSource<TValue> = NamedEventSourceT<ValueEventListener<TValue>> & {
+    readonly evt:NamedEventT<ValueEventListener<TValue>> & {
+        readonly getValue:()=>TValue;
+    }
+}
+
 /**
  * Creates an event source for a custom listener type
  * @returns An event source
@@ -97,6 +109,47 @@ export function createCustomEvent<TListener>():NamedEventSourceT<TListener>
 export function createValueEvent<TValue>():NamedValueEventSource<TValue>
 {
     return createCustomEvent();
+}
+
+/**
+ * Creates an event source for a value event and stores the value.
+ * @returns An event source
+ */
+export function createValueBackedEvent<TValue>(initValue:TValue):NamedValueBackedEventSource<TValue>
+{
+    let value:TValue=initValue;
+    const listeners:ValueEventListener<TValue>[]=[];
+    const removeListener=(listener:ValueEventListener<TValue>)=>
+    {
+        aryRemoveItem(listeners,listener);
+    }
+    const addListener=(listener:ValueEventListener<TValue>)=>
+    {
+        listeners.push(listener);
+    }
+    const evt=(listener:ValueEventListener<TValue>)=>
+    {
+        listeners.push(listener);
+        return ()=>{
+            removeListener(listener);
+        }
+    }
+    evt.addListener=addListener;
+    evt.removeListener=removeListener;
+    evt.getValue=()=>value;
+    return {
+        evt,
+        trigger:(
+            (v:TValue)=>{
+                value=v;
+                if(listeners){
+                    for(const l of listeners){
+                        l(value)
+                    }
+                }
+            }
+        ) as any
+    };
 }
 
 /**

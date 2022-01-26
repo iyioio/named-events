@@ -1,4 +1,4 @@
-import { createEvent, createEventT, createValueEvent } from './named-events-index';
+import { createCustomEvent, createEvent, createValueBackedEvent, createValueEvent } from './named-events-index';
 
 class ExampleClass
 {
@@ -20,10 +20,16 @@ class ExampleClass
     }
 
 
-    private readonly _onGo=createEventT<(speed:'fast'|'slow',direction:'left'|'right')=>void>();
+    private readonly _onGo=createCustomEvent<(speed:'fast'|'slow',direction:'left'|'right')=>void>();
     public get onGo(){return this._onGo.evt}
     public go(speed:'fast'|'slow',direction:'left'|'right'){
         this._onGo.trigger(speed,direction);
+    }
+
+    private readonly _CobSaladMeat=createValueBackedEvent<'chicken'|'rat'>('chicken');
+    public get cobSaladMeat(){return this._CobSaladMeat.evt}
+    public setCobSaladMeat(meat:'chicken'|'rat'){
+        this._CobSaladMeat.trigger(meat);
     }
 
 }
@@ -48,6 +54,16 @@ const stringListener=obj.onStringChange((newValue:string)=>{
 obj.setStr('fast 🏎️'); // triggers the listener
 stringListener(); // remove listener
 obj.setStr('slow 🐌'); // listener not called because removed
+
+
+
+// Value backed event
+const valueBackedListener=obj.cobSaladMeat((newValue:string)=>{
+    console.log(`Applebees serves ${newValue} in their cob salads`);
+})
+obj.setCobSaladMeat('rat'); // triggers the listener and set value to rat
+valueBackedListener(); // remove listener
+obj.setCobSaladMeat('chicken'); // listener not called because removed
 
 
 

@@ -8,7 +8,7 @@ npm install @iyio/named-events
 
 ## Example
 ``` ts
-import { createEvent, createEventT, createValueEvent } from '@iyio/named-events';
+import { createCustomEvent, createEvent, createValueBackedEvent, createValueEvent } from '@iyio/named-events';
 
 class ExampleClass
 {
@@ -30,10 +30,16 @@ class ExampleClass
     }
 
 
-    private readonly _onGo=createEventT<(speed:'fast'|'slow',direction:'left'|'right')=>void>();
+    private readonly _onGo=createCustomEvent<(speed:'fast'|'slow',direction:'left'|'right')=>void>();
     public get onGo(){return this._onGo.evt}
     public go(speed:'fast'|'slow',direction:'left'|'right'){
         this._onGo.trigger(speed,direction);
+    }
+
+    private readonly _CobSaladMeat=createValueBackedEvent<'chicken'|'rat'>('chicken');
+    public get cobSaladMeat(){return this._CobSaladMeat.evt}
+    public setCobSaladMeat(meat:'chicken'|'rat'){
+        this._CobSaladMeat.trigger(meat);
     }
 
 }
@@ -61,6 +67,16 @@ obj.setStr('slow 🐌'); // listener not called because removed
 
 
 
+// Value backed event
+const valueBackedListener=obj.cobSaladMeat((newValue:string)=>{
+    console.log(`Applebees serves ${newValue} in their cob salads`);
+})
+obj.setCobSaladMeat('rat'); // triggers the listener and set value to rat
+valueBackedListener(); // remove listener
+obj.setCobSaladMeat('chicken'); // listener not called because removed
+
+
+
 // Custom Event
 const goListener=obj.onGo((speed,direction)=>{
     console.log(`Go ${speed} turn ${direction}`);
@@ -83,12 +99,14 @@ obj.setStr('Jesus'); // triggers the listener
 obj.onStringChange.removeListener(listener);
 obj.setStr('Zeus'); // listener not called because removed
 
+
 ```
 
 ## Output
 ``` txt
 Shake'n Back
 I wanna go fast 🏎️
+Applebees serves rat in their cob salads
 Go fast turn left
 Baby Jesus
 ```
