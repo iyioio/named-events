@@ -26,11 +26,7 @@ class ExampleClass
         this._onGo.trigger(speed,direction);
     }
 
-    private readonly _CobSaladMeat=createValueBackedEvent<'chicken'|'rat'>('chicken');
-    public get cobSaladMeat(){return this._CobSaladMeat.evt}
-    public setCobSaladMeat(meat:'chicken'|'rat'){
-        this._CobSaladMeat.trigger(meat);
-    }
+    public readonly cobSaladMeat=createValueBackedEvent<'chicken'|'rat'>('chicken');
 
 }
 
@@ -58,12 +54,12 @@ obj.setStr('slow 🐌'); // listener not called because removed
 
 
 // Value backed event
-const valueBackedListener=obj.cobSaladMeat((newValue:string)=>{
+const valueBackedListener=obj.cobSaladMeat.evt((newValue:string)=>{
     console.log(`Applebees serves ${newValue} in their cob salads`);
 })
-obj.setCobSaladMeat('rat'); // triggers the listener and set value to rat
+obj.cobSaladMeat.setValue(meat=>meat==='rat'?'chicken':'rat'); // triggers the listener and set value to rat
 valueBackedListener(); // remove listener
-obj.setCobSaladMeat('chicken'); // listener not called because removed
+obj.cobSaladMeat.setValue('chicken'); // listener not called because removed
 
 
 

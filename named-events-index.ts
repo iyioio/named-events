@@ -59,6 +59,8 @@ export type NamedValueEventSource<TValue> = NamedEventSourceT<ValueEventListener
  * allows the value to be returned using evt.getValue()
  */
 export type NamedValueBackedEventSource<TValue> = NamedEventSourceT<ValueEventListener<TValue>> & {
+    readonly getValue:()=>TValue;
+    readonly setValue:(value:TValue|((currentValue:TValue)=>TValue))=>TValue;
     readonly evt:NamedEventT<ValueEventListener<TValue>> & {
         readonly getValue:()=>TValue;
     }
@@ -134,13 +136,34 @@ export function createValueBackedEvent<TValue>(initValue:TValue):NamedValueBacke
             removeListener(listener);
         }
     }
+    const getValue=()=>value;
+    const setValue=(v:TValue|((currentValue:TValue)=>TValue))=>{
+        if(typeof v === 'function'){
+            v=(v as any)(value);
+        }
+        if(v===value){
+            return value;
+        }
+        value=v as any;
+        if(listeners){
+            for(const l of listeners){
+                l(value)
+            }
+        }
+        return value;
+    }
     evt.addListener=addListener;
     evt.removeListener=removeListener;
-    evt.getValue=()=>value;
+    evt.getValue=getValue;
     return {
         evt,
+        getValue,
+        setValue,
         trigger:(
             (v:TValue)=>{
+                if(v===value){
+                    return;
+                }
                 value=v;
                 if(listeners){
                     for(const l of listeners){
